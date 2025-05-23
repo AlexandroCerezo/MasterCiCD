@@ -1,0 +1,26 @@
+name: "Lint Python code"
+on:
+  push: # Only execute pipeline when someone pushes a commit to these branches
+    branches:
+      - master
+
+
+jobs:
+  pages: # Name of the job
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create artifact
+        run: |
+          mkdir -p public
+          my index.html public/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path:
+            ./public
+      - id: deployment
+        uses: actions/deploy-page@v4
